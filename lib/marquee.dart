@@ -750,11 +750,15 @@ class _MarqueeState extends State<Marquee> with SingleTickerProviderStateMixin {
   }
 
   Widget _wrapWithFadingEdgeScrollView(Widget child) {
-    return FadingEdgeScrollView.fromScrollView(
-      gradientFractionOnStart:
-          !showFading ? 0.0 : widget.fadingEdgeStartFraction,
-      gradientFractionOnEnd: !showFading ? 0.0 : widget.fadingEdgeEndFraction,
-      child: child as ScrollView,
-    );
+    final startFraction = !showFading ? 0.0 : widget.fadingEdgeStartFraction;
+    final endFraction = !showFading ? 0.0 : widget.fadingEdgeEndFraction;
+    return startFraction != 0.0 || endFraction != 0.0
+        ? FadingEdgeScrollView.fromScrollView(
+            gradientFractionOnStart: !showFading ? 0.0 : widget.fadingEdgeStartFraction,
+            gradientFractionOnEnd: !showFading ? 0.0 : widget.fadingEdgeEndFraction,
+            child: child as ScrollView,
+          )
+        : child;
   }
 }
+
